@@ -1,6 +1,8 @@
 using System;
 using api.Configurarions;
+using api.Configurarions.Authorization;
 using api.Data;
+using api.Models;
 using api.Repositories;
 using api.Repositories.Interfaces;
 using api.Services;
@@ -62,7 +64,23 @@ namespace api
             // Ativa o uso do token como forma de autorizar o acesso
             // a recursos deste projeto
             services.AddAuthorization(auth => {
-                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                auth.AddPolicy("Dono", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser()
+                    .AddRequirements(new IAuthorizationRequirement[] {
+                        new CargoRequirement(Cargo.DONO)
+                    })
+                    .Build());
+
+                auth.AddPolicy("Funcionário", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser()
+                    .AddRequirements(new IAuthorizationRequirement[] {
+                        new CargoRequirement(Cargo.FUNCIONARIO)
+                    })
+                    .Build());
+
+                auth.AddPolicy("Autenticado", new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser()
                     .Build());
@@ -80,6 +98,9 @@ namespace api
 
             // Validators
             services.AddScoped<IUsuarioValidator, UsuarioValidator>();
+
+            // Authorization
+            services.AddSingleton<IAuthorizationHandler, CargoRequirementHandler>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

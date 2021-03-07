@@ -2,10 +2,12 @@ using System.Threading.Tasks;
 using api.Models;
 using api.Models.DTO;
 using api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
+    [Authorize("Funcionário")]
     [Route("api/[controller]")]
     public class PedidoController : Controller {
         private readonly IPedidoService service;
@@ -31,7 +33,7 @@ namespace api.Controllers
 
             Prato[] pratos = pedidoDTO.Pratos;
 
-            // insere pedido
+            await service.CadastrarAsync(pedido, pratos);
         }
     }
 }

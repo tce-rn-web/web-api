@@ -4,19 +4,26 @@ using System;
 
 namespace api.Data {
     public class DatabaseContext : DbContext {
+        public DbSet<Cargo> Cargos { get; set; }
+        public DbSet<EstadoPedido> EstadosPedido { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<PedidoPrato> PedidosPratos { get; set; }
-        public DbSet<Permissao> Permissoes { get; set; }
         public DbSet<Prato> Pratos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<UsuarioPermissao> UsuariosPermissoes { get; set; }
-        public DbSet<EstadoPedido> EstadosPedido { get; set; }
-
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {}
 
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
+
+            builder.Entity<Cargo>(cargo => {
+                cargo.HasKey(p => p.Id);
+                cargo.Property<string>(p => p.Descricao).IsRequired();
+                cargo.HasData(new Cargo[] {
+                    new Cargo(Cargo.DONO, "Dono"),
+                    new Cargo(Cargo.FUNCIONARIO, "Funcionário")
+                });
+            });
 
             builder.Entity<EstadoPedido>(estadoPedido => {
                 estadoPedido.HasKey(ep => ep.Id);
@@ -24,8 +31,10 @@ namespace api.Data {
                     new EstadoPedido(1, "Cadastrado"),
                     new EstadoPedido(2, "Cancelado"),
                     new EstadoPedido(3, "Preparando"),
-                    new EstadoPedido(4, "Entregue"),
-                    new EstadoPedido(5, "Finalizado")
+                    new EstadoPedido(4, "Preparado"),
+                    new EstadoPedido(5, "Entregando"),
+                    new EstadoPedido(6, "Entregue"),
+                    new EstadoPedido(7, "Finalizado")
                 });
             });
 
@@ -42,18 +51,6 @@ namespace api.Data {
                 pedidoPrato.HasKey(pp => new { pp.IdPedido, pp.IdPrato });
             });
 
-            builder.Entity<Permissao>(permissao => {
-                permissao.HasKey(p => p.Id);
-                permissao.Property<string>(p => p.Descricao).IsRequired();
-                permissao.HasData(new Permissao[] {
-                    // TODO: preencher com todas as permissões possíveis
-                    new Permissao(1, "Cadastrar pedidos"),
-                    new Permissao(2, "Cancelar pedidos"),
-                    new Permissao(3, "Preparar pedidos"),
-                    new Permissao(4, "Cobrar pedidos"),
-                });
-            });
-
             builder.Entity<Prato>(prato => {
                 prato.HasKey(p => p.Id);
                 prato.Property<string>(p => p.Nome).IsRequired();
@@ -65,10 +62,10 @@ namespace api.Data {
                 usuario.HasIndex(u => u.Email).IsUnique();
                 usuario.Property<string>(u => u.Senha).IsRequired();
                 usuario.Property<string>(u => u.Nome).IsRequired();
-            });
-
-            builder.Entity<UsuarioPermissao>(usuarioPermissao => {
-                usuarioPermissao.HasKey(up => new { up.IdUsuario, up.IdPermissao });
+                usuario.Property<int>(u => u.IdCargo).IsRequired();
+                usuario.HasData(new Usuario[] {
+                    new Usuario(1, "dono@restaurante.com", "restaurante123", "José Pereira", Cargo.DONO)
+                });
             });
         }
     }

@@ -1,14 +1,18 @@
 namespace api.Models {
-    public class Permissao {
+
+    public class Cargo {
+        public static readonly int DONO = 1;
+        public static readonly int FUNCIONARIO = 2;
+
         public int Id { get; set; }
         public string Descricao { get; set; }
 
-        public Permissao() {
+        public Cargo() {
             this.Id = 0;
             this.Descricao = "";
         }
 
-        public Permissao(int id, string descricao) {
+        public Cargo(int id, string descricao) {
             this.Id = id;
             this.Descricao = descricao;
         }
