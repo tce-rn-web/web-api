@@ -1,10 +1,8 @@
 using System;
 using api.Configurarions;
 using api.Data;
-using api.Models;
 using api.Repositories;
 using api.Repositories.Interfaces;
-using api.Service.Interfaces;
 using api.Services;
 using api.Services.Interfaces;
 using api.Validators;
@@ -73,15 +71,15 @@ namespace api
 
         private void ConfigureDependencyInjection(IServiceCollection services) {
             // Services
-            services.AddScoped<IDishService, DishService>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IPedidoService, PedidoService>();
 
             // Repositories
-            services.AddScoped<IDishRepository, DishRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IPedidoRepository, PedidoRepository>();
 
             // Validators
-            services.AddScoped<IBaseValidator<User>, UserValidator>();
+            services.AddScoped<IUsuarioValidator, UsuarioValidator>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
