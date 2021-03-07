@@ -43,7 +43,7 @@ namespace api.Services {
                     new GenericIdentity(usuario.Email, "Login"),
                     new [] {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim("IdCargo", usuarioDb.IdCargo.ToString())
+                        new Claim("CargoId", usuarioDb.CargoId.ToString())
                     }
                 );
 

@@ -24,7 +24,7 @@ namespace api.Controllers {
         [HttpPost("cadastro")]
         public async Task<TokenRespostaDTO> SignUp([FromBody] Usuario usuario) {
             // TODO: Por enquanto, só é permitido o cadastro de funcionarios
-            usuario.IdCargo = Cargo.FUNCIONARIO;
+            usuario.CargoId = Cargo.FUNCIONARIO;
             await this.service.CadastrarAsync(usuario);
             return await this.service.LoginAsync(usuario);
         }

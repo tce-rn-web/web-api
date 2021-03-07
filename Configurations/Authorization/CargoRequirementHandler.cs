@@ -7,13 +7,13 @@ namespace api.Configurarions.Authorization {
             AuthorizationHandlerContext context, 
             CargoRequirement requirement
         ) {
-            if(context.User.HasClaim(c => c.Type == "IdCargo")) {
-                int idCargo = int.Parse(context.User
-                    .FindFirst(c => c.Type == "IdCargo")
+            if(context.User.HasClaim(c => c.Type == "CargoId")) {
+                int cargoId = int.Parse(context.User
+                    .FindFirst(c => c.Type == "CargoId")
                     .Value
                 );
 
-                if(idCargo == requirement.IdCargo)
+                if(cargoId == requirement.CargoId)
                     context.Succeed(requirement);
                 else
                     context.Fail();

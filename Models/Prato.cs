@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+
 namespace api.Models {
     public class Prato {
         public int Id { get; set; }
         public string Nome { get; set; }
         public float Preco { get; set; }
+        public virtual IEnumerable<PedidoPrato> PedidosPratos { get; set; }
 
         public Prato() {
             this.Id = 0;

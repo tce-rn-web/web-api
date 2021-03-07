@@ -17,8 +17,8 @@ namespace api.Controllers
         }
 
         [HttpGet("listar")]
-        public async Task<Pedido[]> ListarAsync(int idEstado = 0) {
-            return await service.ListarAsync(idEstado);
+        public async Task<Pedido[]> ListarAsync(int estadoPedidoId = 0) {
+            return await service.ListarAsync(estadoPedidoId);
         }
 
         [HttpPost("cadastrar")]
@@ -27,7 +27,7 @@ namespace api.Controllers
                 pedidoDTO.Id,
                 pedidoDTO.Mesa,
                 pedidoDTO.Descricao,
-                pedidoDTO.IdEstado, // TODO: implementar estado
+                pedidoDTO.EstadoPedidoId, // TODO: implementar estado
                 null // A data é atribuída durante a inserção no banco de dados
             );
 

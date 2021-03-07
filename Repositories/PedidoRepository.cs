@@ -12,14 +12,14 @@ namespace api.Repositories {
             this.context = context;
         }
 
-        public async Task<Pedido[]> ListarAsync(int idEstado) {
+        public async Task<Pedido[]> ListarAsync(int estado) {
             IQueryable<Pedido> query = this.context.Pedidos;
             
             query = query.AsNoTracking()
                     .OrderBy<Pedido, int>(pedido => pedido.Id);
-            if(idEstado > 0)
+            if(estado > 0)
                 query = query
-                    .Where<Pedido>(pedido => pedido.IdEstado == idEstado);
+                    .Where<Pedido>(pedido => pedido.EstadoPedidoId == estado);
             return await query.ToArrayAsync();
         }
 

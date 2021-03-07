@@ -1,16 +1,22 @@
 namespace api.Models {
     public class PedidoPrato {
-        public int IdPedido { get; set; }
-        public int IdPrato { get; set; }
+        public int PedidoId { get; set; }
+        public int PratoId { get; set; }
+        public int Quantidade { get; set; }
+
+        public Pedido Pedido { get; set; }
+        public Prato Prato { get; set; }
 
         public PedidoPrato() {
-            this.IdPedido = 0;
-            this.IdPrato = 0;
+            this.PedidoId = 0;
+            this.PratoId = 0;
+            this.Quantidade = 0;
         }
 
-        public PedidoPrato(int idPedido, int idPrato) {
-            this.IdPedido = idPedido;
-            this.IdPrato = idPrato;
+        public PedidoPrato(int pedidoId, int pratoId, int quantidade) {
+            this.PedidoId = pedidoId;
+            this.PratoId = pratoId;
+            this.Quantidade = quantidade;
         }
     }
 }
