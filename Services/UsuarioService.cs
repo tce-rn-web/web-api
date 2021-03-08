@@ -66,7 +66,8 @@ namespace api.Services {
                 return TokenRespostaDTO.CriarTokenDeSucesso(
                     dataDeCriacao,
                     dataDeValidade,
-                    token
+                    token,
+                    usuarioDb.CargoId
                 );
             }
             return TokenRespostaDTO.CriarTokenDeFalha("Usuário ou senha inválido.");
