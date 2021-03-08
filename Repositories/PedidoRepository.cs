@@ -37,11 +37,10 @@ namespace api.Repositories {
                     .Include(p => p.PedidosPratos)
                     .ThenInclude(pp => pp.Prato);
 
-            query.AsNoTracking<Pedido>()
+            return await query.AsNoTracking<Pedido>()
                 .OrderBy<Pedido, int>(p => p.Id)
-                .Where<Pedido>(p => p.Id == id);
-
-            return await query.FirstOrDefaultAsync<Pedido>();
+                .Where<Pedido>(p => p.Id == id)
+                .FirstOrDefaultAsync<Pedido>();
         }
 
         public async Task CadastrarAsync(Pedido pedido) {
@@ -60,8 +59,10 @@ namespace api.Repositories {
         }
 
         public async Task EditarAsync(Pedido pedido) {
-            // Busca pedido atual
-            var pedidoAtual = await this.EncontrarPorIdAsync(pedido.Id, false);
+            Pedido pedidoAtual = await this.context.Pedidos
+                .Include(p => p.PedidosPratos)
+                .OrderBy<Pedido,int>(p => p.Id)
+                .FirstOrDefaultAsync(p => p.Id == pedido.Id);
 
             if(pedidoAtual == null || pedidoAtual.Id <= 0)
                 // TODO: criar uma exceção
@@ -74,20 +75,20 @@ namespace api.Repositories {
             // Adiciona PedidosPratos novos
             foreach(var pp in pedido.PedidosPratos) {
                 pp.PedidoId = pedido.Id;
+                pp.Pedido = null;
+                pp.Prato = null;
                 this.context.Add(pp);
             }
 
             // Atualiza campos do pedido
-            pedido.DataDoPedido = pedidoAtual.DataDoPedido;
-            this.context.Update<Pedido>(pedido);
+            pedidoAtual.Mesa = pedido.Mesa;
+            pedidoAtual.Descricao = pedido.Descricao;
+            pedidoAtual.EstadoPedidoId = pedido.EstadoPedidoId;
             
-            if(await this.context.SaveChangesAsync() <= 0)
-                // TODO: Verificar em que situações isso ocorre
-                throw new System.Exception();
+            await this.context.SaveChangesAsync();
         }
 
         public async Task AlterarEstadoPedidoAsync(int id, int estadoPedidoId) {
-            // Pedido pedido = new Pedido(id, null, null, estadoPedidoId, null);
             Pedido pedido = await this.context.Pedidos
                 .OrderBy<Pedido,int>(p => p.Id)
                 .FirstOrDefaultAsync(p => p.Id == id);
