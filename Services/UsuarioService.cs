@@ -78,6 +78,7 @@ namespace api.Services {
             var usuarioDb = await this.repository.EncontrarPorEmailAsync(usuario.Email);
             if(usuarioDb == null || usuarioDb.Id == 0) {
                 usuario.Id = 0; // Garantia de que o banco de dados irá criar um novo usuário
+                usuario.Cargo = null; // Impedimento para que o banco não tente cadastrar cargos
                 await repository.CadastrarAsync(usuario);
             }
             else

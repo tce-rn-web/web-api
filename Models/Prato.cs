@@ -5,7 +5,7 @@ namespace api.Models {
         public int Id { get; set; }
         public string Nome { get; set; }
         public float Preco { get; set; }
-        public virtual IEnumerable<PedidoPrato> PedidosPratos { get; set; }
+        public virtual ICollection<PedidoPrato> PedidosPratos { get; set; }
 
         public Prato() {
             this.Id = 0;

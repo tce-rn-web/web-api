@@ -98,6 +98,7 @@ namespace api
 
             // Validators
             services.AddScoped<IUsuarioValidator, UsuarioValidator>();
+            services.AddScoped<IPedidoValidator, PedidoValidator>();
 
             // Authorization
             services.AddSingleton<IAuthorizationHandler, CargoRequirementHandler>();
@@ -113,6 +114,11 @@ namespace api
 
             this.ConfigureJWT(services);
             this.ConfigureDependencyInjection(services);
+
+            // Previnir erro ao encontrar um ciclo de referências ao converter objeto para JSON
+            services.AddControllers()
+                    .AddNewtonsoftJson(option => option.SerializerSettings.ReferenceLoopHandling = 
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

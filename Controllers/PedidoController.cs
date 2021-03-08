@@ -17,23 +17,16 @@ namespace api.Controllers
         }
 
         [HttpGet("listar")]
-        public async Task<Pedido[]> ListarAsync(int estadoPedidoId = 0) {
-            return await service.ListarAsync(estadoPedidoId);
+        public async Task<Pedido[]> ListarAsync(
+            [FromQuery] int estadoPedidoId = 0, 
+            [FromQuery] bool incluirPratos = false
+        ) {
+            return await service.ListarAsync(estadoPedidoId, incluirPratos);
         }
 
         [HttpPost("cadastrar")]
-        public async Task CadastrarAsync(PedidoDTO pedidoDTO) {
-            Pedido pedido = new Pedido(
-                pedidoDTO.Id,
-                pedidoDTO.Mesa,
-                pedidoDTO.Descricao,
-                pedidoDTO.EstadoPedidoId, // TODO: implementar estado
-                null // A data é atribuída durante a inserção no banco de dados
-            );
-
-            Prato[] pratos = pedidoDTO.Pratos;
-
-            await service.CadastrarAsync(pedido, pratos);
+        public async Task CadastrarAsync([FromBody] Pedido pedido) {
+            await service.CadastrarAsync(pedido);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace api.Models {
 
         public int Id { get; set; }
         public string Descricao { get; set; }
-        public virtual IEnumerable<Usuario> Usuarios { get; set; }
+        public virtual ICollection<Usuario> Usuarios { get; set; }
 
         public Cargo() {
             this.Id = 0;

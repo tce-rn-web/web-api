@@ -9,7 +9,7 @@ namespace api.Models {
         public DateTime? DataDoPedido { get; set; }
         public int EstadoPedidoId { get; set; }
         public virtual EstadoPedido EstadoPedido { get; set; }
-        public virtual IEnumerable<PedidoPrato> PedidosPratos { get; set; }
+        public virtual ICollection<PedidoPrato> PedidosPratos { get; set; }
 
         public Pedido() {
             this.Id = 0;

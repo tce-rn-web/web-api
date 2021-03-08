@@ -26,15 +26,29 @@ namespace api.Validators {
                 throw new NomeInvalidoException();
         }
 
+        private void ValidarCargoId(int cargoId) {
+            if(cargoId != Cargo.DONO && 
+                cargoId != Cargo.FUNCIONARIO
+            )
+                throw new CargoIdInvalidoException();
+        }
+
         public void ValidarParaLogin(Usuario usuario) {
+            if(usuario == null)
+                // TODO: criar uma excessão para este caso
+                throw new Exception("Erro desconhecido");
             this.ValidarEmail(usuario.Email);
             this.ValidarSenha(usuario.Senha);
         }
 
         public void ValidarParaCadastro(Usuario usuario) {
+            if(usuario == null)
+                // TODO: criar uma excessão para este caso
+                throw new Exception("Erro desconhecido");
             this.ValidarEmail(usuario.Email);
             this.ValidarSenha(usuario.Senha);
             this.ValidarNome(usuario.Nome);
+            this.ValidarCargoId(usuario.CargoId);
         }
     }
 }
