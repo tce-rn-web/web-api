@@ -1,10 +1,10 @@
 using System;
 using api.Configurarions;
-using api.Configurarions.Authorization;
 using api.Data;
 using api.Models;
 using api.Repositories;
 using api.Repositories.Interfaces;
+using api.Service.Interfaces;
 using api.Services;
 using api.Services.Interfaces;
 using api.Validators;
@@ -64,23 +64,7 @@ namespace api
             // Ativa o uso do token como forma de autorizar o acesso
             // a recursos deste projeto
             services.AddAuthorization(auth => {
-                auth.AddPolicy("Dono", new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser()
-                    .AddRequirements(new IAuthorizationRequirement[] {
-                        new CargoRequirement(Cargo.DONO)
-                    })
-                    .Build());
-
-                auth.AddPolicy("Funcionário", new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser()
-                    .AddRequirements(new IAuthorizationRequirement[] {
-                        new CargoRequirement(Cargo.FUNCIONARIO)
-                    })
-                    .Build());
-
-                auth.AddPolicy("Autenticado", new AuthorizationPolicyBuilder()
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser()
                     .Build());
@@ -89,21 +73,15 @@ namespace api
 
         private void ConfigureDependencyInjection(IServiceCollection services) {
             // Services
-            services.AddScoped<IUsuarioService, UsuarioService>();
-            services.AddScoped<IPedidoService, PedidoService>();
-            services.AddScoped<IPratoService, PratoService>();
+            services.AddScoped<IDishService, DishService>();
+            services.AddScoped<IUserService, UserService>();
 
             // Repositories
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<IPedidoRepository, PedidoRepository>();
-            services.AddScoped<IPratoRepository, PratoRepository>();
+            services.AddScoped<IDishRepository, DishRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             // Validators
-            services.AddScoped<IUsuarioValidator, UsuarioValidator>();
-            services.AddScoped<IPedidoValidator, PedidoValidator>();
-
-            // Authorization
-            services.AddSingleton<IAuthorizationHandler, CargoRequirementHandler>();
+            services.AddScoped<IBaseValidator<User>, UserValidator>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -112,25 +90,17 @@ namespace api
             services.AddDbContext<DatabaseContext>(
                 builder => builder.UseSqlite(Configuration.GetConnectionString("DatabaseConnection"))
             );
-            
-            // Adiciona controllers
-            services.AddControllers(options =>
-                // Adiciona um filtro para tratar exceções
-                options.Filters.Add(new ExceptionHandlerFilter()));
+            services.AddControllers();
 
             this.ConfigureJWT(services);
             this.ConfigureDependencyInjection(services);
-
-            // Previnir erro ao encontrar um ciclo de referências ao converter objeto para JSON
-            services.AddControllers()
-                    .AddNewtonsoftJson(option => option.SerializerSettings.ReferenceLoopHandling = 
-                        Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) {
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
             }
 
