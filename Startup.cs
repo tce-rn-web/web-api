@@ -91,10 +91,12 @@ namespace api
             // Services
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IPedidoService, PedidoService>();
+            services.AddScoped<IPratoService, PratoService>();
 
             // Repositories
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IPedidoRepository, PedidoRepository>();
+            services.AddScoped<IPratoRepository, PratoRepository>();
 
             // Validators
             services.AddScoped<IUsuarioValidator, UsuarioValidator>();

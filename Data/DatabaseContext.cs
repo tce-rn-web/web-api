@@ -14,9 +14,7 @@ namespace api.Data {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {}
 
         protected override void OnModelCreating(ModelBuilder builder) {
-            base.OnModelCreating(builder);
-
-            
+            base.OnModelCreating(builder);            
 
             builder.Entity<Cargo>(cargo => {
                 cargo.HasKey(p => p.Id);
