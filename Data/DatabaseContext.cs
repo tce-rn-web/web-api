@@ -16,6 +16,8 @@ namespace api.Data {
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
 
+            
+
             builder.Entity<Cargo>(cargo => {
                 cargo.HasKey(p => p.Id);
                 cargo.Property<string>(p => p.Descricao).IsRequired();
@@ -49,7 +51,8 @@ namespace api.Data {
                 // relacionamento EstadoPedido One2Many Pedido
                 pedido.HasOne<EstadoPedido>(p => p.EstadoPedido)
                     .WithMany(ep => ep.Pedidos)
-                    .HasForeignKey(p => p.EstadoPedidoId);
+                    .HasForeignKey(p => p.EstadoPedidoId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
                 // REMOVER: manter por enquanto não são implementadas as operações sobre pratos
                 pedido.HasData(new Pedido[] {
@@ -87,12 +90,14 @@ namespace api.Data {
                 // relacionamento Pedido One2Many PedidoPrato
                 pedidoPrato.HasOne<Pedido>(pp => pp.Pedido)
                     .WithMany(p => p.PedidosPratos)
-                    .HasForeignKey(pp => pp.PedidoId);
+                    .HasForeignKey(pp => pp.PedidoId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
                 // relacionamento Prato One2Many PedidoPrato
                 pedidoPrato.HasOne<Prato>(pp => pp.Prato)
                     .WithMany(p => p.PedidosPratos)
-                    .HasForeignKey(pp => pp.PratoId);
+                    .HasForeignKey(pp => pp.PratoId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
                 pedidoPrato.HasData(new PedidoPrato[] {
                     new PedidoPrato(1,2,1),
@@ -114,8 +119,8 @@ namespace api.Data {
                 // relacionamento Cargo One2Many Usuario 
                 usuario.HasOne<Cargo>(u => u.Cargo)
                     .WithMany(c => c.Usuarios)
-                    .HasForeignKey(u => u.CargoId);
-
+                    .HasForeignKey(u => u.CargoId)
+                    .OnDelete(DeleteBehavior.Restrict);
                 usuario.HasData(new Usuario[] {
                     new Usuario(1, "dono@restaurante.com", "restaurante123", "José Pereira", Cargo.DONO)
                 });

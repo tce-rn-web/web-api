@@ -24,6 +24,7 @@ namespace api.Repositories {
             IQueryable<Usuario> query = this.context.Usuarios;
 
             query = query.AsNoTracking()
+                .OrderBy<Usuario, int>(u => u.Id)
                 .Where<Usuario>(usuario => usuario.Email == email);
 
             return await query.FirstOrDefaultAsync();

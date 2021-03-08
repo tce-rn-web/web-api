@@ -34,7 +34,6 @@ namespace api.Validators {
             
             foreach(PedidoPrato pp in pedido.PedidosPratos) {
                 if(pp == null || 
-                    pp.PedidoId != pedido.Id ||
                     pp.PratoId <= 0 ||
                     pp.Quantidade <= 0
                 )
@@ -49,13 +48,14 @@ namespace api.Validators {
             this.ValidarMesa(pedido);
             this.ValidarPedidosPratos(pedido);
         }
-
-        // public void ValidarPratosDoPedido(Prato[] pratos) {
-        //     foreach (Prato prato in pratos) {
-        //         if(prato == null || prato.Id <= 0)
-        //             // TODO: Criar uma nova exceção
-        //             throw new System.Exception();
-        //     }
-        // }
+        public void ValidarParaEdicao(Pedido pedido) {
+            if(pedido == null)
+                // TODO: Ver em que casos isso acontece
+                throw new System.Exception();
+            this.ValidarId(pedido);
+            this.ValidarMesa(pedido);
+            this.ValidarEstadoPedidoId(pedido);
+            this.ValidarPedidosPratos(pedido);
+        }
     }
 }
