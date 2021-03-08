@@ -43,15 +43,13 @@ namespace api.Validators {
 
         public void ValidarParaCadastro(Pedido pedido) {
             if(pedido == null)
-                // TODO: Ver em que casos isso acontece
-                throw new System.Exception();
+                throw new PedidoInvalidoException();
             this.ValidarMesa(pedido);
             this.ValidarPedidosPratos(pedido);
         }
         public void ValidarParaEdicao(Pedido pedido) {
             if(pedido == null)
-                // TODO: Ver em que casos isso acontece
-                throw new System.Exception();
+                throw new PedidoInvalidoException();
             this.ValidarId(pedido);
             this.ValidarMesa(pedido);
             this.ValidarEstadoPedidoId(pedido);

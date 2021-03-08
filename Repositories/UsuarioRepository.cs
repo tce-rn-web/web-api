@@ -1,4 +1,5 @@
 using api.Data;
+using api.Exceptions;
 using api.Models;
 using api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +17,7 @@ namespace api.Repositories {
         public async Task CadastrarAsync(Usuario usuario) {
             this.context.Add(usuario);
             if(await this.context.SaveChangesAsync() <= 0)
-                // TODO: Verificar em que situações isso ocorre
-                throw new System.Exception();
+                throw new FalhaCadastroUsuarioException();
         }
 
         public async Task<Usuario> EncontrarPorEmailAsync(string email) {

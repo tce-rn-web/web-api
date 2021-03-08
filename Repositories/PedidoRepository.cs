@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Exceptions;
 using api.Models;
 using api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -54,8 +55,7 @@ namespace api.Repositories {
             }
             
             if(await this.context.SaveChangesAsync() <= 0)
-                // TODO: Verificar em que situações isso ocorre
-                throw new System.Exception();
+                throw new FalhaCadastroPedidoException();
         }
 
         public async Task EditarAsync(Pedido pedido) {
@@ -65,8 +65,7 @@ namespace api.Repositories {
                 .FirstOrDefaultAsync(p => p.Id == pedido.Id);
 
             if(pedidoAtual == null || pedidoAtual.Id <= 0)
-                // TODO: criar uma exceção
-                throw new System.Exception("O pedido informado não está cadastrado.");
+                throw new PedidoIdNaoCadastradoException();
 
             // Remove os PedidosPratos que atuais
             foreach(var pp in pedidoAtual.PedidosPratos)
@@ -94,14 +93,11 @@ namespace api.Repositories {
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if(pedido == null | pedido.Id <= 0)
-                // TODO: criar uma exceção para aqui
-                throw new System.Exception("O id de pedido informado não está cadastrado.");
+                throw new PedidoIdNaoCadastradoException();
 
             pedido.EstadoPedidoId = estadoPedidoId;
             
-            if(await this.context.SaveChangesAsync() <= 0)
-                // TODO: Verificar em que situações isso ocorre
-                throw new System.Exception();
+            await this.context.SaveChangesAsync();
         }
     }
 }

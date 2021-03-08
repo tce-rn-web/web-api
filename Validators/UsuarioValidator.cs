@@ -4,7 +4,6 @@ using api.Validators.Interfaces;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace api.Validators {
     public class UsuarioValidator : IUsuarioValidator {
         private void ValidarEmail(string email) {
@@ -35,16 +34,14 @@ namespace api.Validators {
 
         public void ValidarParaLogin(Usuario usuario) {
             if(usuario == null)
-                // TODO: criar uma excessão para este caso
-                throw new Exception("Erro desconhecido");
+                throw new UsuarioInvalidoException();
             this.ValidarEmail(usuario.Email);
             this.ValidarSenha(usuario.Senha);
         }
 
         public void ValidarParaCadastro(Usuario usuario) {
             if(usuario == null)
-                // TODO: criar uma excessão para este caso
-                throw new Exception("Erro desconhecido");
+                throw new UsuarioInvalidoException();
             this.ValidarEmail(usuario.Email);
             this.ValidarSenha(usuario.Senha);
             this.ValidarNome(usuario.Nome);
