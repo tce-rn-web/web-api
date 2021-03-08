@@ -39,7 +39,6 @@ namespace api.Validators {
                     pp.Quantidade <= 0
                 )
                     throw new PedidoPratoInvalidoException();
-                System.Console.WriteLine($">>>>>>>>>>>>>>>>>>>>>>>\n{pp.PedidoId}\n{pp.PratoId}\n{pp.Quantidade}>>>>>>>>>>>>>>>>>>>>>>>\n");
             }
         }
 

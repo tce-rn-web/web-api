@@ -33,9 +33,9 @@ namespace api.Repositories {
             var pedidosPratos = pedido.PedidosPratos;
             pedido.PedidosPratos = null;
 
-            Pedido res = this.context.Add(pedido).Entity;
             foreach(var pp in pedidosPratos) {
-                pp.PedidoId = res.Id;
+                pp.PedidoId = 0;
+                pp.Pedido = pedido;
                 this.context.Add(pp);
             }
             
