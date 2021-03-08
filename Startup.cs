@@ -112,7 +112,11 @@ namespace api
             services.AddDbContext<DatabaseContext>(
                 builder => builder.UseSqlite(Configuration.GetConnectionString("DatabaseConnection"))
             );
-            services.AddControllers();
+            
+            // Adiciona controllers
+            services.AddControllers(options =>
+                // Adiciona um filtro para tratar exceções
+                options.Filters.Add(new ExceptionHandlerFilter()));
 
             this.ConfigureJWT(services);
             this.ConfigureDependencyInjection(services);
@@ -126,8 +130,7 @@ namespace api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
 
