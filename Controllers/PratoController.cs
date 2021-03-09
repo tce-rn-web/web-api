@@ -19,5 +19,21 @@ namespace api.Controllers
         public async Task<Prato[]> ListarAsync() {
             return await this.service.ListarAsync();
         }
+
+        [Authorize("Dono")]
+        [HttpPost("cadastrar")]
+        public async Task CadastrarAsync([FromBody] Prato prato) {
+            await service.CadastrarAsync(prato);
+        }
+
+        [Authorize("Dono")]
+        [HttpPut("{id}/editar")]
+        public async Task EditarAsync(
+            [FromRoute] int id,
+            [FromBody] Prato prato
+        ) {
+            prato.Id = id;
+            await service.EditarAsync(prato);
+        }
     }
 }

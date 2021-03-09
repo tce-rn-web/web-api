@@ -23,18 +23,24 @@ public class ExceptionHandlerFilter : IActionFilter, IOrderedFilter {
                 e is PedidoPratoInvalidoException ||
                 e is PedidoSemPratosException ||
                 e is SenhaInvalidaException ||
-                e is UsuarioInvalidoException
+                e is UsuarioInvalidoException ||
+                e is NomeDoPratoInvalidoException ||
+                e is PratoInvalidoException ||
+                e is PrecoDoPratoInvalidoException
             )
                 context.Result = new BadRequestObjectResult(e.Message);
             // 409 Conflict
             else if(e is EmailJaEstaEmUsoException)
                 context.Result = new ConflictObjectResult(e.Message);
             // 422 Unprocessable Entity
-            else if(e is PedidoIdNaoCadastradoException)
+            else if(e is PedidoIdNaoCadastradoException ||
+                e is PedidoIdNaoCadastradoException
+            )
                 context.Result = new UnprocessableEntityObjectResult(e.Message);
             // 500 Internal Server Error
             else if(e is FalhaCadastroPedidoException ||
-                e is FalhaCadastroUsuarioException
+                e is FalhaCadastroUsuarioException ||
+                e is FalhaCadastroPratoException
             )
                 context.Result = new ObjectResult(e.Message) {
                     StatusCode = 500
