@@ -37,7 +37,7 @@ namespace api.Services {
             
             if(usuarioDb != null &&
                 usuario.Email.Equals(usuarioDb.Email) &&
-                usuario.Senha.Equals(usuario.Senha)
+                usuario.Senha.Equals(usuarioDb.Senha)
             ) {
                 ClaimsIdentity identidade = new ClaimsIdentity(
                     new GenericIdentity(usuario.Email, "Login"),
@@ -84,6 +84,15 @@ namespace api.Services {
             }
             else
                 throw new EmailJaEstaEmUsoException();
+        }
+
+        public async Task<Usuario[]> ListarAsync() {
+            return await repository.ListarAsync();
+        }
+        
+        public async Task EditarAsync(Usuario usuario) {
+            this.validator.ValidarParaEdicao(usuario);
+            await repository.EditarAsync(usuario);
         }
     }
 }

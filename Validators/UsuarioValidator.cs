@@ -47,5 +47,14 @@ namespace api.Validators {
             this.ValidarNome(usuario.Nome);
             this.ValidarCargoId(usuario.CargoId);
         }
+
+        public void ValidarParaEdicao(Usuario usuario) {
+            if(usuario == null)
+                throw new UsuarioInvalidoException();
+            this.ValidarEmail(usuario.Email);
+            this.ValidarSenha(usuario.Senha);
+            this.ValidarNome(usuario.Nome);
+            this.ValidarCargoId(usuario.CargoId);
+        }
     }
 }

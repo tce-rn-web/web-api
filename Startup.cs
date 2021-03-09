@@ -101,6 +101,7 @@ namespace api
             // Validators
             services.AddScoped<IUsuarioValidator, UsuarioValidator>();
             services.AddScoped<IPedidoValidator, PedidoValidator>();
+            services.AddScoped<IPratoValidator, PratoValidator>();
 
             // Authorization
             services.AddSingleton<IAuthorizationHandler, CargoRequirementHandler>();

@@ -29,5 +29,28 @@ namespace api.Repositories {
 
             return await query.FirstOrDefaultAsync();
         }
+
+        public async Task<Usuario[]> ListarAsync() {
+            return await this.context.Usuarios
+                .AsNoTracking()
+                .OrderBy<Usuario, string>(p => p.Nome)
+                .ToArrayAsync();
+        }
+
+        public async Task EditarAsync(Usuario usuario) {
+            Usuario usuarioAtual = await this.context.Usuarios
+                .OrderBy<Usuario, int>(p => p.Id)
+                .FirstOrDefaultAsync(p => p.Id == usuario.Id);
+
+            if(usuarioAtual == null || usuarioAtual.Id <= 0)
+                throw new UsuarioIdNaoCadastradoException();
+
+            usuarioAtual.Email = usuario.Email;
+            usuarioAtual.Nome = usuario.Nome;
+            usuarioAtual.Senha = usuario.Senha;
+            usuarioAtual.CargoId = usuario.CargoId;
+            
+            await this.context.SaveChangesAsync();
+        }
     }
 }

@@ -28,5 +28,21 @@ namespace api.Controllers {
             await this.service.CadastrarAsync(usuario);
             return await this.service.LoginAsync(usuario);
         }
+
+        [Authorize("Dono")]
+        [HttpGet("usuario/listar")]
+        public async Task<Usuario[]> ListarAsync() {
+            return await this.service.ListarAsync();
+        }
+
+        [Authorize("Dono")]
+        [HttpPut("usuario/{id}/editar")]
+        public async Task EditarAsync(
+            [FromRoute] int id,
+            [FromBody] Usuario usuario
+        ) {
+            usuario.Id = id;
+            await this.service.EditarAsync(usuario);
+        }
     }
 }
