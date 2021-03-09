@@ -16,7 +16,7 @@ namespace api.Repositories {
         public async Task<Prato[]> ListarAsync() {
             return await this.context.Pratos
                 .AsNoTracking()
-                .OrderBy<Prato, int>(p => p.Id)
+                .OrderBy<Prato, string>(p => p.Nome)
                 .ToArrayAsync<Prato>();
         }
 

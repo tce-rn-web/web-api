@@ -34,7 +34,8 @@ public class ExceptionHandlerFilter : IActionFilter, IOrderedFilter {
                 context.Result = new ConflictObjectResult(e.Message);
             // 422 Unprocessable Entity
             else if(e is PedidoIdNaoCadastradoException ||
-                e is PedidoIdNaoCadastradoException
+                e is PedidoIdNaoCadastradoException ||
+                e is UsuarioIdNaoCadastradoException
             )
                 context.Result = new UnprocessableEntityObjectResult(e.Message);
             // 500 Internal Server Error

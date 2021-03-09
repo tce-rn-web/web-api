@@ -85,5 +85,14 @@ namespace api.Services {
             else
                 throw new EmailJaEstaEmUsoException();
         }
+
+        public async Task<Usuario[]> ListarAsync() {
+            return await repository.ListarAsync();
+        }
+        
+        public async Task EditarAsync(Usuario usuario) {
+            this.validator.ValidarParaEdicao(usuario);
+            await repository.EditarAsync(usuario);
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
@@ -22,7 +23,7 @@ namespace api.Repositories {
                     .ThenInclude(pp => pp.Prato);
 
             query = query.AsNoTracking()
-                    .OrderBy<Pedido, int>(pedido => pedido.Id);
+                    .OrderBy<Pedido, DateTime?>(pedido => pedido.DataDoPedido);
             if(estadoPedidoId > 0)
                 query = query
                     .Where<Pedido>(pedido => pedido.EstadoPedidoId == estadoPedidoId);
