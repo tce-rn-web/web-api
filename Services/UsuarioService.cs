@@ -37,7 +37,7 @@ namespace api.Services {
             
             if(usuarioDb != null &&
                 usuario.Email.Equals(usuarioDb.Email) &&
-                usuario.Senha.Equals(usuario.Senha)
+                usuario.Senha.Equals(usuarioDb.Senha)
             ) {
                 ClaimsIdentity identidade = new ClaimsIdentity(
                     new GenericIdentity(usuario.Email, "Login"),
